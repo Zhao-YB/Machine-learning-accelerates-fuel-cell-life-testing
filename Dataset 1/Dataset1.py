@@ -118,8 +118,6 @@ for cell_num in range(1, 43):
                     df = pd.read_csv(file_path, sep='\t')
                     df.columns = ['UC', 'IC'] 
 
-
-                    # 插值
                     df['IC'] = pd.to_numeric(df['IC'], errors='coerce')
                     df['UC'] = pd.to_numeric(df['UC'], errors='coerce')
                     
@@ -164,7 +162,6 @@ for cell_num in range(1, 43):
                 try:
                     df = pd.read_csv(file_path, sep='\t')
                     df.columns = ['Time', 'UC', 'IC'] 
-                    # 条件筛选
                     condition = df['UC'] <= 0.4
 
                     start_index = -1
@@ -188,7 +185,7 @@ for cell_num in range(1, 43):
                     
                     df.dropna(inplace=True)
                     
-                    f = interp1d(df['UC'],df['IC'], kind='linear', fill_value="extrapolate") # extrapolate参数外推
+                    f = interp1d(df['UC'],df['IC'], kind='linear', fill_value="extrapolate") # extrapolate鍙傛暟澶栨帹
                     interpolated_u = f(interpolation_points)
                     interpolated_df = pd.DataFrame({'UC': interpolation_points, 'IC': interpolated_u})
                     interpolated_df['Cell'] = f'Cell_{cell_num:02}'
@@ -439,7 +436,6 @@ for cell in combined_cv_df[combined_cv_df.Cell != 'Cell_06'].Cell.unique():
     cell_ids.append(cell_number)
 cv_result = np.array(cv_result)
 cell_ids = np.array(cell_ids)
-# 从第12个数据点（索引11）开始截取数据
 cv_result = cv_result[:-1]
 ecsa_array_subset = ecsa_array[::2][:-1]
 cell_ids = cell_ids[:][:-1]
